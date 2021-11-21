@@ -1,2 +1,2 @@
 # nix-configuration
-![NixOs](https://btwiusegentoo.github.io/nixconfig/pictures/wallpaper2.png)
+![NixOs](https://i.imgur.com/y3YdnbH.png)
