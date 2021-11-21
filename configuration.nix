@@ -104,9 +104,10 @@
 			neofetch
 			unzip
 			zip
-			xfce.thunar
+			pcmanfm
 			feh
 			unrar
+			gthumb
 
      		];
 
@@ -115,6 +116,8 @@
   };
 
   networking.networkmanager.enable = true;
+
+  programs.dconf.enable = true;
 
   # Configure keymap in X11
   services.xserver.layout = "es";
@@ -148,19 +151,17 @@
   # Packages of kurumi
   users.users.kurumi.packages = with pkgs; [ 
 
+     go
      php 
      php74Packages.composer 
      nodejs-16_x
      opera
      vivaldi
      google-chrome
-     filezilla
-     fira-code
      lollypop
-     jetbrains.pycharm-community
      sublime3
      youtube-dl
-     bleachbit
+     zoom-us
 
   ];
 
