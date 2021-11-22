@@ -19,7 +19,7 @@
     ''
         127.0.0.2 license.sublimehq.com
     '';
-  # networking.wireless.enable = true;
+  #networking.wireless.enable = true;
 
   # Set your time zone.
   time.timeZone = "America/Mexico_City";
@@ -56,31 +56,27 @@
   #services.xserver.displayManager.lightdm.enable = true;
   #services.pantheon.apps.enable = true;
 
+  # Xfce Desktop
+  #services.xserver.desktopManager.xterm.enable = false;
+  #services.xserver.desktopManager.xfce.enable = true;
+  #services.xserver.displayManager.defaultSession = "xfce";
+  
+  # Kde Desktop
+  #services.xserver.desktopManager.plasma5.enable = true;
+
   # I3 Desktop
   environment.pathsToLink = [ "/libexec" ];
-
   services.xserver = {
-
 	desktopManager = {
-
       		xterm.enable = false;
-
     	};
-
 	displayManager = {
-
         	defaultSession = "none+i3";
-
 	};
-
 	windowManager.i3 = {
-
 		package = pkgs.i3-gaps;
-		
 		enable = true;
-
 		extraPackages = with pkgs; [
-
 			picom
 			rofi
 			sakura
@@ -96,9 +92,7 @@
         		i3lock
         		i3blocks
 			udiskie
-			flameshot
 			htop
-			jp2a
 			killall
 			leafpad
 			neofetch
@@ -108,16 +102,15 @@
 			feh
 			unrar
 			gthumb
-
      		];
-
 	};
-
   };
 
   networking.networkmanager.enable = true;
 
   programs.dconf.enable = true;
+
+  nix.autoOptimiseStore = true;
 
   # Configure keymap in X11
   services.xserver.layout = "es";
@@ -162,6 +155,8 @@
      sublime3
      youtube-dl
      zoom-us
+     flameshot
+     jp2a
 
   ];
 
