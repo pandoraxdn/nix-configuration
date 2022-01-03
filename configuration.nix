@@ -86,11 +86,11 @@
 			networkmanagerapplet
 			brightnessctl
 			lxappearance
-        		dmenu
+        	dmenu
 			xss-lock
-        		i3status
-        		i3lock
-        		i3blocks
+        	i3status
+        	i3lock
+        	i3blocks
 			udiskie
 			htop
 			killall
@@ -101,10 +101,56 @@
 			pcmanfm
 			feh
 			unrar
-			gthumb
-     		];
+			sxiv
+     	];
 	};
   };
+
+  # Awesome Desktop
+  /*
+  services.xserver = {
+  
+    displayManager = {
+      sddm.enable = true;
+      defaultSession = "none+awesome";
+    };
+
+    windowManager.awesome = {
+
+      enable = true;
+
+      luaModules = with pkgs.luaPackages; [
+        luarocks
+        luadbi-mysql
+      ];
+
+	  extraPackages = with pkgs; [
+			picom
+			rofi
+			sakura
+			volumeicon
+			polybar
+			networkmanager
+			networkmanagerapplet
+			brightnessctl
+			lxappearance
+        	dmenu
+			udiskie
+			htop
+			killall
+			leafpad
+			neofetch
+			unzip
+			zip
+			pcmanfm
+			feh
+			unrar
+			sxiv
+      ];
+    };
+
+  };
+  */
 
   networking.networkmanager.enable = true;
 
