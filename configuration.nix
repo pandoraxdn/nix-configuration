@@ -1,7 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, pkgs, ... }:
 
 {
@@ -102,7 +98,7 @@
 			feh
 			unrar
 			sxiv
-     	];
+     		];
 	};
   };
 
@@ -124,29 +120,6 @@
         luadbi-mysql
       ];
 
-	  extraPackages = with pkgs; [
-			picom
-			rofi
-			sakura
-			volumeicon
-			polybar
-			networkmanager
-			networkmanagerapplet
-			brightnessctl
-			lxappearance
-        	dmenu
-			udiskie
-			htop
-			killall
-			leafpad
-			neofetch
-			unzip
-			zip
-			pcmanfm
-			feh
-			unrar
-			sxiv
-      ];
     };
 
   };
@@ -164,6 +137,8 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+
+  services.printing.drivers = [ pkgs.pkgs.gutenprint ];
 
   # Enable sound.
   sound.enable = true;
@@ -191,14 +166,16 @@
   users.users.kurumi.packages = with pkgs; [ 
 
      go
-     php 
+     python310
+     php74
      php74Packages.composer 
-     nodejs-16_x
+     nodejs-17_x
      opera
-     vivaldi
+     freeoffice
      google-chrome
-     lollypop
+     vlc
      sublime3
+     beekeeper-studio
      youtube-dl
      zoom-us
      flameshot
@@ -214,6 +191,7 @@
      wget
      git
      mariadb
+     postgresql
      curl
      zsh
 
@@ -244,21 +222,38 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "21.05";
+  system.stateVersion = "21.11";
 
   # Upgrade of system
   system.autoUpgrade.enable = true;
 
   system.autoUpgrade.allowReboot = true;
 
-  system.autoUpgrade.channel = https://nixos.org/channels/nixos-21.05;
+  system.autoUpgrade.channel = https://nixos.org/channels/nixos-21.11;
 
   # Enable service of mariadb-server
   services.mysql.package = pkgs.mariadb;
 
   services.mysql.enable = true;
 
+  # Enable service of postgresql
+  services.postgresql = {
+    enable = true;
+    package = pkgs.postgresql;
+    enableTCPIP = true;
+    authentication = pkgs.lib.mkOverride 10 ''
+      local all all trust
+      host all all ::1/128 trust
+      host  all  all 0.0.0.0/0 md5
+    '';
+    initialScript = pkgs.writeText "backend-initScript" ''
+      CREATE ROLE kurumi WITH LOGIN PASSWORD 'pass' SUPERUSER; 
+      CREATE DATABASE kurumi;
+      GRANT ALL PRIVILEGES ON DATABASE kurumi TO kurumi;
+    '';
+  };
+
   # Enable zsh
   programs.zsh.enable = true;
-
+  
 }
