@@ -43,8 +43,8 @@
   services.xserver.enable = true;
 
   # GNOME Desktop
-  # services.xserver.displayManager.gdm.enable = true;
-  # services.xserver.desktopManager.gnome.enable = true;
+  #services.xserver.displayManager.gdm.enable = true;
+  #services.xserver.desktopManager.gnome.enable = true;
 
   # PANTHEON Desktop
   #services.xserver.desktopManager.pantheon.enable = true;
@@ -73,31 +73,31 @@
 		package = pkgs.i3-gaps;
 		enable = true;
 		extraPackages = with pkgs; [
-			picom
-			rofi
-			sakura
-			volumeicon
-			polybar
-			networkmanager
-			networkmanagerapplet
-			brightnessctl
-			lxappearance
-        	dmenu
 			xss-lock
-        	i3status
-        	i3lock
-        	i3blocks
-			udiskie
-			htop
-			killall
-			leafpad
-			neofetch
-			unzip
-			zip
-			pcmanfm
-			feh
-			unrar
-			sxiv
+        		i3status
+        		i3lock
+        		i3blocks
+     			picom
+     			rofi
+     			sakura
+     			volumeicon
+     			polybar
+     			networkmanager
+     			networkmanagerapplet
+     			brightnessctl
+     			lxappearance
+     			dmenu
+     			udiskie
+     			htop
+     			killall
+     			leafpad
+     			neofetch
+     			unzip
+     			zip
+     			pcmanfm
+     			feh
+     			unrar
+     			sxiv
      		];
 	};
   };
@@ -105,23 +105,34 @@
   # Awesome Desktop
   /*
   services.xserver = {
-  
+    desktopManager.xterm.enable = false;
     displayManager = {
-      sddm.enable = true;
-      defaultSession = "none+awesome";
+      defaultSession = "awesome";
     };
-
     windowManager.awesome = {
-
       enable = true;
-
       luaModules = with pkgs.luaPackages; [
         luarocks
         luadbi-mysql
       ];
 
     };
+  };
+  */
 
+  # Bspwm
+  /*
+  services.xserver = {
+     autorun = false;
+     desktopManager.xterm.enable = false;
+     displayManager = {
+     	defaultSession = "bspwm";
+     };
+     windowManager.bspwm = {
+      	enable = true;
+	configFile = builtins.getEnv $HOME + "/.config/bspwm/bspwmrc";
+	sxhkd.configFile = builtins.getEnv $HOME + "/.config/sxhkd/sxhkdrc";
+     }; 
   };
   */
 
@@ -154,7 +165,8 @@
      isNormalUser = true;
      home = "/home/kurumi";
      description = "Rodrigo Xdn";
-     extraGroups = [ "wheel" "networkmanager" ];
+     group = "users";
+     extraGroups = [ "wheel" "disk" "audio" "video" "networkmanager" "systemd-journal" ];
      shell = pkgs.zsh;
 
   };
@@ -232,9 +244,15 @@
   system.autoUpgrade.channel = https://nixos.org/channels/nixos-21.11;
 
   # Enable service of mariadb-server
-  services.mysql.package = pkgs.mariadb;
-
-  services.mysql.enable = true;
+  services.mysql = {
+    enable = true;	
+    package = pkgs.mariadb;
+    initialScript = pkgs.writeText "index.sql" ''
+      CREATE USER 'kurumi'@'localhost' IDENTIFIED BY 'betaxdn0';
+      GRANT ALL PRIVILEGES ON * . * TO 'kurumi'@'localhost';
+      FLUSH PRIVILEGES;
+    '';
+  };
 
   # Enable service of postgresql
   services.postgresql = {
@@ -247,7 +265,7 @@
       host  all  all 0.0.0.0/0 md5
     '';
     initialScript = pkgs.writeText "backend-initScript" ''
-      CREATE ROLE kurumi WITH LOGIN PASSWORD 'pass' SUPERUSER; 
+      CREATE ROLE kurumi WITH LOGIN PASSWORD 'betaxdn0' SUPERUSER; 
       CREATE DATABASE kurumi;
       GRANT ALL PRIVILEGES ON DATABASE kurumi TO kurumi;
     '';
