@@ -77,27 +77,6 @@
         		i3status
         		i3lock
         		i3blocks
-     			picom
-     			rofi
-     			sakura
-     			volumeicon
-     			polybar
-     			networkmanager
-     			networkmanagerapplet
-     			brightnessctl
-     			lxappearance
-     			dmenu
-     			udiskie
-     			htop
-     			killall
-     			leafpad
-     			neofetch
-     			unzip
-     			zip
-     			pcmanfm
-     			feh
-     			unrar
-     			sxiv
      		];
 	};
   };
@@ -156,6 +135,9 @@
 
   hardware.pulseaudio.enable = true;
 
+  # mpd
+  hardware.pulseaudio.extraConfig = "load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1";
+
   # Enable touchpad support (enabled default in most desktopManager).
   services.xserver.libinput.enable = true;
 
@@ -206,6 +188,30 @@
      postgresql
      curl
      zsh
+     # Windows Manager
+     picom
+     rofi
+     sakura
+     volumeicon
+     polybar
+     networkmanager
+     networkmanagerapplet
+     brightnessctl
+     lxappearance
+     dmenu
+     udiskie
+     htop
+     killall
+     leafpad
+     neofetch
+     unzip
+     zip
+     pcmanfm
+     feh
+     unrar
+     sxiv
+     mpd
+     # End Windows Manager
 
   ];
 
@@ -269,6 +275,22 @@
       CREATE DATABASE kurumi;
       GRANT ALL PRIVILEGES ON DATABASE kurumi TO kurumi;
     '';
+  };
+
+  # Enable service mpd
+  services.mpd = {
+    enable = true;
+    user = "kurumi";
+    group = "users";
+    musicDirectory = "/home/kurumi/Música";
+    dataDir = "/home/kurumi/.config/mpd";
+    extraConfig = ''
+	audio_output {
+		type    "pulse"
+		name    "Pulseaudio"
+        	server  "127.0.0.1"
+        }
+      '';
   };
 
   # Enable zsh
