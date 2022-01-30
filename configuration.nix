@@ -254,7 +254,7 @@
     enable = true;	
     package = pkgs.mariadb;
     initialScript = pkgs.writeText "index.sql" ''
-      CREATE USER 'kurumi'@'localhost' IDENTIFIED BY 'betaxdn0';
+      CREATE USER 'kurumi'@'localhost' IDENTIFIED BY 'pass';
       GRANT ALL PRIVILEGES ON * . * TO 'kurumi'@'localhost';
       FLUSH PRIVILEGES;
     '';
@@ -271,7 +271,7 @@
       host  all  all 0.0.0.0/0 md5
     '';
     initialScript = pkgs.writeText "backend-initScript" ''
-      CREATE ROLE kurumi WITH LOGIN PASSWORD 'betaxdn0' SUPERUSER; 
+      CREATE ROLE kurumi WITH LOGIN PASSWORD 'pass' SUPERUSER; 
       CREATE DATABASE kurumi;
       GRANT ALL PRIVILEGES ON DATABASE kurumi TO kurumi;
     '';
