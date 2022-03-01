@@ -174,6 +174,12 @@
      zoom-us
      flameshot
      jp2a
+     cava
+     code-minimap
+     glava
+     lolcat
+     ncmpcpp
+     neofetch
 
   ];
 
@@ -253,11 +259,14 @@
   services.mysql = {
     enable = true;	
     package = pkgs.mariadb;
-    initialScript = pkgs.writeText "index.sql" ''
-      CREATE USER 'kurumi'@'localhost' IDENTIFIED BY 'pass';
-      GRANT ALL PRIVILEGES ON * . * TO 'kurumi'@'localhost';
-      FLUSH PRIVILEGES;
-    '';
+    ensureUsers = [
+    	{
+              name = "kurumi";
+              ensurePermissions = {
+                "*.*" = "ALL PRIVILEGES";
+              };
+        }
+    ];
   };
 
   # Enable service of postgresql
@@ -287,7 +296,7 @@
     extraConfig = ''
 	audio_output {
 		type    "pulse"
-		name    "Pulseaudio"
+		name    "PulseAudio"
         	server  "127.0.0.1"
         }
       '';
