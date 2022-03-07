@@ -63,11 +63,13 @@
   # I3 Desktop
   environment.pathsToLink = [ "/libexec" ];
   services.xserver = {
-	desktopManager = {
-      		xterm.enable = false;
-    	};
+    	desktopManager.xterm.enable = false;
+  	desktopManager.pantheon.enable = true;
+  	desktopManager.pantheon.extraSwitchboardPlugs = [ pkgs.pantheon-tweaks ];
 	displayManager = {
         	defaultSession = "none+i3";
+		lightdm.greeters.pantheon.enable = true;
+		lightdm.enable = true;
 	};
 	windowManager.i3 = {
 		package = pkgs.i3-gaps;
@@ -80,6 +82,8 @@
      		];
 	};
   };
+
+  services.pantheon.apps.enable = true;
 
   # Awesome Desktop
   /*
@@ -161,8 +165,8 @@
 
      go
      python310
-     php74
-     php74Packages.composer 
+     php
+     php80Packages.composer
      nodejs-17_x
      opera
      freeoffice
@@ -194,6 +198,7 @@
      postgresql
      curl
      zsh
+     nginx
      # Windows Manager
      picom
      rofi
@@ -255,7 +260,7 @@
 
   system.autoUpgrade.channel = https://nixos.org/channels/nixos-21.11;
 
-  # Enable service of mariadb-server
+  # Enable service mariadb-server
   services.mysql = {
     enable = true;	
     package = pkgs.mariadb;
@@ -269,7 +274,7 @@
     ];
   };
 
-  # Enable service of postgresql
+  # Enable service postgresql
   services.postgresql = {
     enable = true;
     package = pkgs.postgresql;
@@ -280,7 +285,7 @@
       host  all  all 0.0.0.0/0 md5
     '';
     initialScript = pkgs.writeText "backend-initScript" ''
-      CREATE ROLE kurumi WITH LOGIN PASSWORD 'pass' SUPERUSER; 
+      CREATE ROLE kurumi WITH LOGIN PASSWORD 'betaxdn0' SUPERUSER; 
       CREATE DATABASE kurumi;
       GRANT ALL PRIVILEGES ON DATABASE kurumi TO kurumi;
     '';
@@ -304,5 +309,5 @@
 
   # Enable zsh
   programs.zsh.enable = true;
-  
+
 }
