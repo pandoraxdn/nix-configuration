@@ -285,7 +285,7 @@
       host  all  all 0.0.0.0/0 md5
     '';
     initialScript = pkgs.writeText "backend-initScript" ''
-      CREATE ROLE kurumi WITH LOGIN PASSWORD 'betaxdn0' SUPERUSER; 
+      CREATE ROLE kurumi WITH LOGIN PASSWORD 'pass' SUPERUSER; 
       CREATE DATABASE kurumi;
       GRANT ALL PRIVILEGES ON DATABASE kurumi TO kurumi;
     '';
