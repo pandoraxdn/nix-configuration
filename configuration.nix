@@ -64,12 +64,9 @@
   environment.pathsToLink = [ "/libexec" ];
   services.xserver = {
     	desktopManager.xterm.enable = false;
-  	desktopManager.pantheon.enable = true;
-  	desktopManager.pantheon.extraSwitchboardPlugs = [ pkgs.pantheon-tweaks ];
 	displayManager = {
         	defaultSession = "none+i3";
-		lightdm.greeters.pantheon.enable = true;
-		lightdm.enable = true;
+		gdm.enable = true;
 	};
 	windowManager.i3 = {
 		package = pkgs.i3-gaps;
@@ -82,8 +79,6 @@
      		];
 	};
   };
-
-  services.pantheon.apps.enable = true;
 
   # Awesome Desktop
   /*
@@ -222,6 +217,7 @@
      unrar
      sxiv
      mpd
+     betterlockscreen
      # End Windows Manager
 
   ];
