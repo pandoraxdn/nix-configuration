@@ -7,8 +7,27 @@
     ];
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader = {
+  	efi = {
+		canTouchEfiVariables = true;
+		efiSysMountPoint = "/boot";
+	};
+	grub = {
+		devices = [ "nodev" ];
+		efiSupport = true;
+		enable = true;
+		extraEntries = ''
+		  menuentry "Windows" {
+		    insmod part_gpt
+		    insmod fat
+		    insmod search_fs_uuid
+		    insmod chain
+		    search --fs-uuid --set=root $FS_UUID
+		    chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+		  }
+		'';
+	};
+  };
 
   networking.hostName = "dead-master";
   networking.extraHosts =
